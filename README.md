@@ -3,6 +3,7 @@ This is a wrapper class/library inspired and based on Ignited Datatables  found 
 
 Requirements
 ---------------------------
+CodeIgniter 4.x
 jQuery v3.6.x
 DataTables 1.13.x
-CodeIgniter 4.x
+
