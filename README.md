@@ -76,5 +76,18 @@ class ProgramDocumentModel extends Model {
 ```
 **Controller**
 ```
+<?php namespace App\Controllers;
+use App\Models\ProgramDocumentModel;
+use CodeIgniter\Config\Services;
 
+class Mitra extends \App\Controllers\MyBaseController {
+	private $ProgramDocumentModel;
+	public function __construct() {
+		parent::__construct();
+		$this->ProgramDocumentModel = new ProgramDocumentModel();
+	}
+	public function getDatatable() {
+		return $this->MitraModel->getDatatable();
+	}
+}
 ```
