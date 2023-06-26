@@ -12,7 +12,7 @@ Install
 To install the library:
 1. copy Titasictech/Titasictables.php to app/ThirdParty
 2. open Config/Autoload.php, then add the following code in $psr4
-   ```
+   ```ruby
    public $psr4 = [
      APP_NAMESPACE => APPPATH, // For custom app namespace
         'Config'      => APPPATH . 'Config',
@@ -23,7 +23,7 @@ To install the library:
 Usage
 ---------------------------
 **Model**
-```
+```ruby
 <?php namespace App\Models;
 
 use CodeIgniter\Model;
@@ -75,7 +75,7 @@ class ProgramDocumentModel extends Model {
 }
 ```
 **Controller**
-```
+```ruby
 <?php namespace App\Controllers;
 use App\Models\ProgramDocumentModel;
 use CodeIgniter\Config\Services;
