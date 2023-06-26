@@ -113,6 +113,8 @@ class User extends \App\Controllers\MyBaseController {
     echo csrf_meta().PHP_EOL; 
   ?>
   ...
+  <!-- Global variable -->
+  <script> var _HOST = '<?= site_url() ?>'; </script>
 </head>
 <body>
 ...
@@ -168,7 +170,7 @@ class User extends \App\Controllers\MyBaseController {
             pageLength: _limit,
             lengthMenu: [5,10,25,50,100],
             language: {
-                /* sudah ada bawaan template
+                /* there is already a default template
                 processing: '<div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">'+
                                 '<span class="visually-hidden">Loading...</span>'+
                             '</div>'
@@ -258,7 +260,7 @@ class User extends \App\Controllers\MyBaseController {
                     let _id = $(this).data("id");
                     let _desc = $(this).data("desc");
                     // sa special should not be removed
-                    if (_desc == 'sa') {swalMsg('Peringatan', 'User Name admin cannot be deleted.', 'warning');return;}
+                    if (_desc == 'sa') {swalMsg('Warning', 'User Name admin cannot be deleted.', 'warning');return;}
                     let _msg = 'You will delete User Name: ' + _desc + '.';
                     deleteData(_HOST+'auth/user/delete', _id, _msg, event);
                 });
