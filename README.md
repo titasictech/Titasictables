@@ -30,7 +30,7 @@ use CodeIgniter\Model;
 use Titasictech\Titasictables;
 
 class ProgramDocumentModel extends Model {
-   protected $table = 'program_document';
+   	protected $table = 'program_document';
 	protected $primaryKey = 'id';
 	...
 	public function getDatatable($par=null) {
