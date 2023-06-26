@@ -22,7 +22,7 @@ To install the library:
  
 Usage
 ---------------------------
-Model
+**Model**
 ```
 <?php namespace App\Models;
 
@@ -73,4 +73,8 @@ class ProgramDocumentModel extends Model {
 		echo $datatables->generate();			
 	}
 }
+```
+**Controller**
+```
+
 ```
