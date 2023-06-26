@@ -118,12 +118,12 @@ class User extends \App\Controllers\MyBaseController {
                 <table id="dt-user" class="table table-flush nowrap" style="width:100%">
                     <thead class="thead-light">
                         <tr>
-                            <th>User Name</th>
-                            <th>Nama Lengkap</th>
+                            <th>Username</th>
+                            <th>Full Name</th>
                             <th>Level</th>
                             <th>Status</th>
-                            <th>Sedang Login?</th>
-                            <th>Aksi</th>
+                            <th>Is Login?</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
