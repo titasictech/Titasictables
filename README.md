@@ -3,9 +3,9 @@ This is a wrapper class/library inspired and based on Ignited Datatables  found 
 
 Requirements
 ---------------------------
-CodeIgniter 4.x
-jQuery v3.6.x
-DataTables 1.13.x
+* CodeIgniter 4.x
+* jQuery v3.6.x
+* DataTables 1.10+
 
 Install
 ---------------------------
@@ -90,4 +90,8 @@ class Mitra extends \App\Controllers\MyBaseController {
 		return $this->MitraModel->getDatatable();
 	}
 }
+```
+**View**
+```ruby
+
 ```
