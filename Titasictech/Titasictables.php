@@ -11,7 +11,7 @@
   * @version    1.1 <beta> First Release
   * @author     Ruhaendi <titasictech@gmail.com / https://titasictech.com>
   * @create     04 Jan 2021
-  * @update	    28 Jan 2021
+  * @update	28 Jan 2021
   
   =======================ORIGINAL=======================
   * Ignited Datatables
