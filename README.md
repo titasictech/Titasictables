@@ -106,11 +106,13 @@ class User extends \App\Controllers\MyBaseController {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  ...
   <?php
     # generate meta csrf token
     # PHP_EOL sama dengan enter / ln
     echo csrf_meta().PHP_EOL; 
   ?>
+  ...
 </head>
 <body>
 ...
@@ -302,3 +304,6 @@ function updateCSRF(_token) {
 </body>
 </html>
 ```
+**Output**
+![image](https://github.com/titasictech/Titasictables/assets/74992283/603fea52-4e45-4fa3-9fcd-781647152952)
+
