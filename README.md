@@ -9,10 +9,9 @@ DataTables 1.13.x
 
 Install
 ---------------------------
-To install the library, copy the libraries/datatables.php file into your application/libraries folder.
+To install the library:
 1. copy Titasictech/Titasictables.php to app/ThirdParty
 2. open Config/Autoload.php, then add the following code in $psr4
-
    ```
    public $psr4 = [
      APP_NAMESPACE => APPPATH, // For custom app namespace
@@ -20,3 +19,7 @@ To install the library, copy the libraries/datatables.php file into your applica
         'Titasictech' => APPPATH . 'ThirdParty/Titasictech'
     ];
    ```
+ 
+Usage
+---------------------------
+
