@@ -103,6 +103,16 @@ class User extends \App\Controllers\MyBaseController {
 ```
 **View**
 ```ruby
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <?php
+    # generate meta csrf token
+    # PHP_EOL sama dengan enter / ln
+    echo csrf_meta().PHP_EOL; 
+  ?>
+</head>
+<body>
 <div id="user-list" class="row mt-0">
     <div class="col-12">
         <div class="card">
@@ -133,4 +143,161 @@ class User extends \App\Controllers\MyBaseController {
         </div>
     </div>  
 </div>
+<script>
+    // global variable
+    var _csrf_content = $('meta[name="X-CSRF-TOKEN"]').attr('content');
+    // Jquery Datatable
+    let _start = 0;
+    let _limit = 10;
+    _sts = '';
+
+    $(function() {
+        _datatable = $('#dt-user').DataTable({
+            destroy: true,
+            processing: true, 
+            jQueryUI: false,
+            autoWidth: false,
+            searching: true,
+            paging: true,
+            pagingType: 'full_numbers',
+            serverSide: true, 
+            displayStart: _start,
+            pageLength: _limit,
+            lengthMenu: [5,10,25,50,100],
+            language: {
+                /* sudah ada bawaan template
+                processing: '<div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">'+
+                                '<span class="visually-hidden">Loading...</span>'+
+                            '</div>'
+                */
+                paginate: {
+                    "first": "<i class='fas fa-angle-double-left'>",
+                    "previous": "<i class='fas fa-angle-left'>",
+                    "next": "<i class='fas fa-angle-right'>",
+                    "last": "<i class='fas fa-angle-double-right'>"
+                },
+            },  
+            //scrollX" : true,
+            //scrollY" : "300",
+            scrollCollapse : true,
+            responsive: true,
+            initComplete: function() {
+                //code
+            },
+            ajax: {
+                url: _HOST+'auth/user/get-datatable', 
+                type: 'POST',
+                data: function (d) {
+                    d.csrf_token_name = _csrf_content 
+                }
+            },
+            columnDefs: [
+                {
+                    targets: [ -1 ], 
+                    orderable: false,
+                    searchable: false
+                },
+            ], 
+            columns: [
+                {data:"user_name", sortable: true, width: "10%", class: "text-sm"},
+                {data:"full_name", sortable: true, width: "30%", class: "text-sm"},	
+                {data:"level", sortable: true, searchable: false, class: "text-sm"},
+                {data:"is_active", sortable: true, searchable: false, class: "text-sm",
+                    render: function(data) {
+                        let _checked = '';
+                        let _label = '';
+
+                        if (data == 'T') {
+                            _checked = 'checked';
+                            _label = 'Aktive';
+                        } else {
+                            _label = 'Not Active';
+                        }
+
+                        return '<div class="form-check form-switch d-flex align-items-center">'+
+                                    '<input class="form-check-input chk-status" type="checkbox" onclick="setActive(this, &apos;'+data+'&apos;, event);" '+_checked+'>'+
+                                    '<label class="form-check-label">'+_label+'</label>'+
+                                '</div>';
+                    }
+                },
+                {data:"is_login", sortable: true, searchable: false, class: "text-sm",
+                    render: function(data) {
+                        let _checked = '';
+                        let _label = '';
+
+                        if (data == 'T') {
+                            _checked = 'checked';
+                            _label = 'Yes';
+                        } else {
+                            _label = 'No';
+                        }
+
+                        return '<div class="form-check form-switch d-flex align-items-center">'+
+                                    '<input class="form-check-input chk-login" type="checkbox" onclick="setLogin(this, &apos;'+data+'&apos;, event);" '+_checked+'>'+
+                                    '<label class="form-check-label">'+_label+'</label>'+
+                                '</div>';
+                    }
+                },
+                {data:"actions", sortable: false, width: "20%", class: "text-sm"}	
+            ],
+            order: [0, 'asc'], 
+            drawCallback: function(settings) { 
+                // .btn-view, .btn-edit dan .btn-delete declared in [na/getDatatable()
+                $(this).on('click', '#btn-view', function(e) {
+                    let _id = $(this).data("id");
+                    openModal(_HOST+'auth/user/get-form?sts=view&id='+_id, '', 'Detail User', event);
+                });
+                $(this).on('click', '#btn-edit', function(e) {
+                    let _id = $(this).data("id");
+                    openModal(_HOST+'auth/user/get-form?sts=edit&id='+_id, '', 'Edit User', event);
+                });
+                $(this).on('click', '#btn-delete', function(e) {
+                    let _id = $(this).data("id");
+                    let _desc = $(this).data("desc");
+                    // sa special should not be removed
+                    if (_desc == 'sa') {swalMsg('Peringatan', 'User Name admin cannot be deleted.', 'warning');return;}
+                    let _msg = 'You will delete User Name: ' + _desc + '.';
+                    deleteData(_HOST+'auth/user/delete', _id, _msg, event);
+                });
+                $(this).on('click', '#btn-reset', function(e) {
+                    let _id = $(this).data("id");
+                    let _desc = $(this).data("desc");
+                    let _msg = 'You will reset User Name password: ' + _desc + '.';
+                    resetPassword(_HOST+'auth/user/reset-password', _id, _msg, event);
+                });
+            },
+            rowCallback: function(row, data, displayIndex) {
+
+            },
+            footerCallback: function (row, data, start, end, display) {
+
+            }
+        });
+
+        // Refresh Data
+        //_datatable.ajax.reload();
+
+        // to hide datatable error messages, so that they can be seen in the console only
+        $.fn.dataTable.ext.errMode = 'throw';
+        
+        _datatable.on('xhr', function() {
+            var _json = _datatable.ajax.json();
+            // update csrf token 
+    	    updateCSRF(_json.csrf_content);
+        });
+});
+
+function updateCSRF(_token) {
+    // global variable
+    _csrf_content = _token;
+    // for meta in head (ajax)
+    $('meta[name="X-CSRF-TOKEN"]').attr('content', _token);
+    // for the input form 
+    if (typeof $('input[name="csrf_token_name"]') !== "undefined") {
+        $('input[name="csrf_token_name"]').attr('value', _token);
+    }
+}
+</script>
+</body>
+</html>
 ```
